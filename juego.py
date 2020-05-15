@@ -13,8 +13,7 @@ BLANCO=[255,255,255]
 class Jugador(pygame.sprite.Sprite):
     def __init__ (self,pos):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface([60,60])
-        self.image.fill(BLANCO)
+        self.image = pygame.image.load('bola.png')
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
         self.rect.y = pos[1]
@@ -86,4 +85,4 @@ if __name__ == '__main__':
         jugadores.draw(ventana)
         rivales.draw(ventana)
         pygame.display.flip()
-        reloj.tick(40)        
+        reloj.tick(40)
