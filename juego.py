@@ -181,7 +181,6 @@ if __name__ == '__main__':
                 if not impacto:
                     j.vidas -= 1
                     vidas = "Vidas: " + str(j.vidas)
-                    p_inf = info.render(vidas, True, BLANCO)
                     impacto = True
 
         for j in jugadores:
