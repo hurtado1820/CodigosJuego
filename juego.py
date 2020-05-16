@@ -20,6 +20,7 @@ class Jugador(pygame.sprite.Sprite):
         self.rect.y = ALTO - self.rect.height
         self.velx = 0
         self.vely = 0
+        self.vida = 0
 
     def RetPos(self):
         x = self.rect.x
@@ -93,8 +94,10 @@ if __name__ == '__main__':
         rivales.add(r)
 
     ptos = 0
+    #Ciclo principal
     reloj = pygame.time.Clock()
     fin = False
+    fin_juego = False
 
     while not fin:
         #Gestion de eventos
@@ -151,24 +154,43 @@ if __name__ == '__main__':
             for r in ls_r:
                 balas.remove(b)
 
+        #Balas enemigo
         for b in balas_r:
-            ls_j = pygame.sprite.spritecollide(b,jugadores,True)
+            ls_j = pygame.sprite.spritecollide(b,jugadores,False)
             if b.rect.x > (ALTO + 50):
                 balas_r.remove(b)
             for j in ls_j:
                 balas_r.remove(b)
-                jugadores.remove(j)  
+                j.vida -= 1
+
+        for j in jugadores:
+            if j.vida < 0:
+                #jugadores.remove(j)
+                #fin = True
+                fin_juego = True
 
 
         #Refresco
-        jugadores.update()
-        rivales.update()
-        balas.update()
-        balas_r.update()
-        ventana.fill(NEGRO)
-        jugadores.draw(ventana)
-        rivales.draw(ventana)
-        balas.draw(ventana)
-        balas_r.draw(ventana)
-        pygame.display.flip()
-        reloj.tick(40)
+        if not fin_juego:
+            jugadores.update()
+            rivales.update()
+            balas.update()
+            balas_r.update()
+            ventana.fill(NEGRO)
+            jugadores.draw(ventana)
+            rivales.draw(ventana)
+            balas.draw(ventana)
+            balas_r.draw(ventana)
+            pygame.display.flip()
+            reloj.tick(40)
+        else:
+            pygame.font.init()
+            fuente = pygame.font.Font(None, 32)
+            msj = fuente.render("Fin de juego",True,BLANCO)
+            ventana.fill (NEGRO)
+            ventana.blit(msj,[200,200])
+            pygame.display.flip()
+            #mensaje
+
+    #Ciclo cierre
+    #print ("fin de juego")
