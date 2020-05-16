@@ -20,6 +20,7 @@ class Jugador(pygame.sprite.Sprite):
         self.rect.y = ALTO - self.rect.height
         self.velx = 0
         self.vely = 0
+        self.vidas = 0
 
     def RetPos(self):
         x = self.rect.x
@@ -40,8 +41,21 @@ class Rival(pygame.sprite.Sprite):
         self.rect.y = pos[1]
         self.velx = 0
         self.vely = 0
+        self.tmp = random.randrange(40,100)
+
+    def RetPos(self):
+        x = self.rect.x + 20
+        y = self.rect.bottom
+        return [x,y]
 
     def update(self):
+        self.tmp -= 1
+        if self.rect.x > (ANCHO - self.rect.width):
+            self.rect.x = ANCHO - self.rect.width
+            self.velx = -5
+        if self.rect.x < 0:
+            self.rect.x = 0
+            self.velx = 5
         self.rect.x += self.velx
 
 class Bala(pygame.sprite.Sprite):
@@ -63,6 +77,7 @@ if __name__ == '__main__':
     jugadores = pygame.sprite.Group()
     rivales = pygame.sprite.Group()
     balas = pygame.sprite.Group()
+    balas_r = pygame.sprite.Group()
 
     j=Jugador([200,200])
     jugadores.add(j)
@@ -108,18 +123,42 @@ if __name__ == '__main__':
         #Control
         ls_obj = pygame.sprite.spritecollide(j,rivales,True)
 
+        for r in rivales:
+            if r.tmp <= 0:
+                pos = r.RetPos()
+                b = Bala(pos)
+                b.vely = 8
+                balas_r.add(b)
+                r.tmp = random.randrange(40,100)
+
         #Limpieza de memoria
         for b in balas:
+            ls_r = pygame.sprite.spritecollide(b,rivales,True)
             if b.rect.y < -50:
                 balas.remove(b)
+            if r in ls_r:
+                balas.remove(b)
+
+        for b in balas_r:
+            ls_j = pygame.sprite.spritecollide(b,jugadores,False)
+            if b.rect.y > (ALTO + 100):
+                balas_r.remove(b)
+            for j in ls_j:
+                j.vidas -= 1
+
+        for j in jugadores:
+            if j.vidas <= 0:            
+
 
         #Refresco
         jugadores.update()
         rivales.update()
         balas.update()
+        balas_r.update()
         ventana.fill(NEGRO)
         jugadores.draw(ventana)
         rivales.draw(ventana)
         balas.draw(ventana)
+        balas_r.draw(ventana)
         pygame.display.flip()
         reloj.tick(40)
