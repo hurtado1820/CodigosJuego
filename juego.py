@@ -13,7 +13,7 @@ BLANCO=[255,255,255]
 class Jugador(pygame.sprite.Sprite):
     def __init__ (self,pos):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface([60,60])
+        self.image = pygame.Surface([40,40])
         self.image.fill(BLANCO)
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
@@ -21,6 +21,7 @@ class Jugador(pygame.sprite.Sprite):
         self.velx = 0
         self.vely = 0
         self.vidas = 0
+        self.bloques = None
 
     def RetPos(self):
         x = self.rect.x
@@ -28,8 +29,30 @@ class Jugador(pygame.sprite.Sprite):
         return [x,y]
 
     def update(self):
+        #Colision en x
         self.rect.x += self.velx
+        ls_col = pygame.sprite.spritecollide (self,self.bloques,False)
+        for b in ls_col:
+            if (self.rect.right > b.rect.left) and (j.velx > 0):
+                self.rect.right = b.rect.left
+                self.velx = 0
+                #j.velx=-5 hace efecto rebote
+            if (self.rect.left < b.rect.right) and (j.velx < 0):
+                self.rect.left = b.rect.right
+                self.velx = 0
+
+        #Colision en y
         self.rect.y += self.vely
+        ls_col = pygame.sprite.spritecollide (self,self.bloques,False)
+        for b in ls_col:
+            if (self.rect.top < b.rect.bottom) and (j.vely < 0):
+                self.rect.top = b.rect.bottom
+                self.vely = 0
+
+            if (self.rect.bottom > b.rect.top) and (j.vely > 0):
+                self.rect.bottom = b.rect.top
+                self.vely = 0
+
 
 class Bloque(pygame.sprite.Sprite):
     def __init__ (self,pos, d_an, d_al):
@@ -44,9 +67,17 @@ if __name__ == '__main__':
     ventana=pygame.display.set_mode([ANCHO,ALTO])
     #Grupos
     jugadores = pygame.sprite.Group()
+    bloques = pygame.sprite.Group()
 
     j=Jugador([200,200])
     jugadores.add(j)
+
+    bl = Bloque([300,100],100,20)
+    bloques.add(bl)
+    bl2 = Bloque([100,150],30,60)
+    bloques.add(bl2)
+
+    j.bloques = bloques
 
     reloj = pygame.time.Clock()
     fin = False
@@ -73,9 +104,6 @@ if __name__ == '__main__':
                 j.velx = 0
                 j.vely = 0
 
-
-        #Control
-
         for j in jugadores:
             if j.vidas < 0:
                 #jugadores.remove(j)
@@ -87,5 +115,6 @@ if __name__ == '__main__':
         jugadores.update()
         ventana.fill(NEGRO)
         jugadores.draw(ventana)
+        bloques.draw(ventana)
         pygame.display.flip()
         reloj.tick(40)
