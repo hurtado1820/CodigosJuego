@@ -93,6 +93,7 @@ if __name__ == '__main__':
 
     reloj = pygame.time.Clock()
     fin = False
+    fin_juego = False
 
     while not fin:
         for event in pygame.event.get():
@@ -147,18 +148,29 @@ if __name__ == '__main__':
                 j.vidas -= 1
 
         for j in jugadores:
-            if j.vidas <= 0:            
+            if j.vidas < 0:
+                #jugadores.remove(j)
+                #fin = True
+                fin_juego = True
 
 
         #Refresco
-        jugadores.update()
-        rivales.update()
-        balas.update()
-        balas_r.update()
-        ventana.fill(NEGRO)
-        jugadores.draw(ventana)
-        rivales.draw(ventana)
-        balas.draw(ventana)
-        balas_r.draw(ventana)
-        pygame.display.flip()
-        reloj.tick(40)
+        if not fin_juego:
+            jugadores.update()
+            rivales.update()
+            balas.update()
+            balas_r.update()
+            ventana.fill(NEGRO)
+            jugadores.draw(ventana)
+            rivales.draw(ventana)
+            balas.draw(ventana)
+            balas_r.draw(ventana)
+            pygame.display.flip()
+            reloj.tick(40)
+        else:
+            pygame.font.init()
+            fuente = pygame.font.Font(None, 32)
+            msj = fuente.render("Fin de juego",True,BLANCO)
+            ventana.fill (NEGRO)
+            ventana.blit(msj,[200,200])
+            pygame.display.flip()
