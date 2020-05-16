@@ -20,7 +20,7 @@ class Jugador(pygame.sprite.Sprite):
         self.rect.y = ALTO - self.rect.height
         self.velx = 0
         self.vely = 0
-        self.vidas = 0
+        self.vidas = 2
 
     def RetPos(self):
         x = self.rect.x
@@ -73,6 +73,30 @@ class Bala(pygame.sprite.Sprite):
 
 if __name__ == '__main__':
     ventana=pygame.display.set_mode([ANCHO,ALTO])
+
+    #Seccion previa
+    pygame.font.init()
+    pygame.mixer.init()
+    fuente = pygame.font.Font(None,40)
+    msj = fuente.render("Juego de ejemplo", True, BLANCO)
+    fondo = pygame.image.load("Fondo.jpg")
+    musica = pygame.mixer.Sound("Sonido.wav")
+    fin = False
+    previo = False
+    musica.play()
+    while (not fin) and (not previo):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                fin = True
+            if event.type == pygame.KEYDOWN:
+                previo = True
+        #ventana.fill(NEGRO)
+        ventana.blit(fondo,[0,0])
+        ventana.blit(msj, [200,200])
+        pygame.display.flip()
+    musica.stop()
+
+    #Seccion de configuracion de nivel
     #Grupos
     jugadores = pygame.sprite.Group()
     rivales = pygame.sprite.Group()
@@ -91,11 +115,15 @@ if __name__ == '__main__':
         r.velx = vx
         rivales.add(r)
 
+    info = pygame.font.Font(None,32)
+    vidas = "Vidas: " + str(j.vidas)
+    p_inf = info.render(vidas, True, BLANCO)
+    sn_disparo = pygame.mixer.Sound("Disparo.wav")
+    sn_dest = pygame.mixer.Sound("Destruccion.wav")
     reloj = pygame.time.Clock()
-    fin = False
     fin_juego = False
 
-    while not fin:
+    while (not fin) and (not fin_juego):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 fin = True
@@ -120,6 +148,7 @@ if __name__ == '__main__':
                 b = Bala(pos)
                 b.vely = -10
                 balas.add(b)
+                sn_disparo.play()
 
         #Control
         ls_obj = pygame.sprite.spritecollide(j,rivales,True)
@@ -138,14 +167,22 @@ if __name__ == '__main__':
             if b.rect.y < -50:
                 balas.remove(b)
             if r in ls_r:
+                #Sonido destruccion enemigo
+                sn_dest.play()
                 balas.remove(b)
 
         for b in balas_r:
             ls_j = pygame.sprite.spritecollide(b,jugadores,False)
+            impacto = False
             if b.rect.y > (ALTO + 100):
                 balas_r.remove(b)
             for j in ls_j:
-                j.vidas -= 1
+                balas_r.remove(b)
+                if not impacto:
+                    j.vidas -= 1
+                    vidas = "Vidas: " + str(j.vidas)
+                    p_inf = info.render(vidas, True, BLANCO)
+                    impacto = True
 
         for j in jugadores:
             if j.vidas < 0:
@@ -155,22 +192,27 @@ if __name__ == '__main__':
 
 
         #Refresco
-        if not fin_juego:
-            jugadores.update()
-            rivales.update()
-            balas.update()
-            balas_r.update()
-            ventana.fill(NEGRO)
-            jugadores.draw(ventana)
-            rivales.draw(ventana)
-            balas.draw(ventana)
-            balas_r.draw(ventana)
-            pygame.display.flip()
-            reloj.tick(40)
-        else:
-            pygame.font.init()
-            fuente = pygame.font.Font(None, 32)
-            msj = fuente.render("Fin de juego",True,BLANCO)
-            ventana.fill (NEGRO)
-            ventana.blit(msj,[200,200])
-            pygame.display.flip()
+        jugadores.update()
+        rivales.update()
+        balas.update()
+        balas_r.update()
+        ventana.fill(NEGRO)
+        ventana.blit(p_inf, [10,10])
+        jugadores.draw(ventana)
+        rivales.draw(ventana)
+        balas.draw(ventana)
+        balas_r.draw(ventana)
+        pygame.display.flip()
+        reloj.tick(40)
+
+    #Mensaje fin de juego
+    fuente = pygame.font.Font(None, 32)
+    msj = fuente.render("Fin de juego",True,BLANCO)
+    while not fin:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                fin = True
+
+        ventana.fill(NEGRO)
+        ventana.blit(msj, [200,200])
+        pygame.display.flip()
