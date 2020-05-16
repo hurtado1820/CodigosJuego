@@ -1,8 +1,8 @@
 import pygame
 import random
 
-ANCHO=1200
-ALTO=500
+ANCHO=500
+ALTO=300
 NEGRO=[0,0,0]
 VERDE=[0,255,0]
 ROJO=[255,0,0]
@@ -31,6 +31,14 @@ class Jugador(pygame.sprite.Sprite):
         self.rect.x += self.velx
         self.rect.y += self.vely
 
+class Bloque(pygame.sprite.Sprite):
+    def __init__ (self,pos, d_an, d_al):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([d_an,d_al])
+        self.image.fill(ROJO)
+        self.rect = self.image.get_rect()
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
 
 if __name__ == '__main__':
     ventana=pygame.display.set_mode([ANCHO,ALTO])
@@ -64,7 +72,7 @@ if __name__ == '__main__':
             if event.type == pygame.KEYUP:
                 j.velx = 0
                 j.vely = 0
-            
+
 
         #Control
 
