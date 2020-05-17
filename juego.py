@@ -31,7 +31,7 @@ class Jugador (pygame.sprite.Sprite):
             self.con += 1
         else:
             self.con = 0
-
+            self.accion = 1
         self.image = self.m[self.accion][self.con]
 
 
@@ -55,6 +55,7 @@ if __name__ == '__main__':
     jugadores.add(j)
     fin = False
     reloj = pygame.time.Clock()
+    cad = []
 
     while not fin:
         #Gestion de eventos
@@ -65,23 +66,33 @@ if __name__ == '__main__':
                 if event.key == pygame.K_RIGHT:
                     j.velx = 5
                     j.vely = 0
-                    j.dir = 2
                 if event.key == pygame.K_LEFT:
                     j.velx = -5
                     j.vely = 0
-                    j.dir = 1
                 if event.key == pygame.K_UP:
                     j.velx = 0
                     j.vely = -5
-                    j.dir = 3
                 if event.key == pygame.K_DOWN:
                     j.velx = 0
                     j.vely = 5
-                    j.dir = 0
+                if event.key == pygame.K_c:
+                    j.accion = 2
+                    j.con = 0
+                    cad += 'c'
+                if event.key == pygame.K_z:
+                    cad += 'z'
+                if event.key == pygame.K_x:
+                    cad += 'x'
             if event.type == pygame.KEYUP:
                 j.velx = 0
                 j.vely = 0
 
+        if len(cad) <= 3:
+            print (cad)
+            if cad == 'zxc':
+                print ("hado ken")
+        else:
+            cad = ''
         jugadores.update()
         ventana.fill(NEGRO)
         #mostrar en pantalla el sprite
