@@ -13,9 +13,10 @@ class Jugador (pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.m = m
         #Direccion hacia abajo
-        self.dir = 0
+        self.accion = 1
         self.con = 0
-        self.image = self.m[self.dir][self.con]
+        self.lim = [3,3,2,4,1,3,4,4,6,0]
+        self.image = self.m[self.accion][self.con]
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
         self.rect.y = pos[1]
@@ -26,27 +27,27 @@ class Jugador (pygame.sprite.Sprite):
         self.rect.x += self.velx
         self.rect.y += self.vely
         #efecto de movimiento
-        if self.velx != self.vely:
-            if self.con < 2:
-                self.con += 1
-            else:
-                self.con = 0
+        if self.con < self.lim[self.accion]:
+            self.con += 1
+        else:
+            self.con = 0
 
-            self.image = self.m[self.dir][self.con]
+        self.image = self.m[self.accion][self.con]
 
 
 
 if __name__ == '__main__':
+    pygame.init()
     ventana = pygame.display.set_mode([ANCHO,ALTO])
     jugadores = pygame.sprite.Group()
 
-    im_animales = pygame.image.load("animales.png")
+    im_animales = pygame.image.load("ken.png")
     #Recorte de sabana
     m = []
-    for j in range(8):
+    for j in range(10):
         fila = []
-        for c in range(12):
-            cuadro = im_animales.subsurface(32*c,32*j,32,32)
+        for c in range(7):
+            cuadro = im_animales.subsurface(70*c,80*j,70,80)
             fila.append(cuadro)
         m.append(fila)
 
