@@ -2,6 +2,7 @@
 Codigos de compu grafica
 
 CONTENIDO DE CADA RAMA:
+
 a1_imagenjp: Implementacion de un jugador (se carga una imagen) y bloques (rivales). Los bloques son estáticos solo se mueve el jugador.
 
 a2_colision: Se maneja lo mismo que en la rama a1_imagenjp, pero en esta rama del juego, el jugador al hacer colision con un enemigo lo elimina.
@@ -21,6 +22,17 @@ c3_completo: Se maneja lo mismo que en la rama a3_interactivo. Se implementa pan
 d3_entornos: Se carga imagen de fondo y un jugador, el jugador se puede mover por el mapa y seguir recorriendo lo que no se ve del mapa, al llegar a un "limite" a la derecha, el mapa se comienza a mover a la vez que se mueve el jugador. Se tiene en cuenta el limite de tamaño del fondo cargado para que este se muestre hasta ahi. Se maneja tambien un bloque que parece "pegado" al fondo, ya que este se mueve a la par con el fondo.
 
 d4_bloquesAmbiente: Se maneja la colision entre el jugador y los bloques, para que el jugador no pueda atravesar el bloque por ningun lado.
+
+a1_ken: Se implementa sprite de ken, cambia de accion segun la tecla. Tiene implementada la accion del puño con la letra 'c'.
+
+a2_ken: Se maneja lo mismo que en la rama a1_ken. Pero en esta se implementa un bloque, cuando el Ken hace colision en la accion de puño, el bloque se mueve.
+
+gestion_img: Se implementa el recorte de sabanas con una de terrenos como ejemplo.
+
+gestion_sp: Se implementa el sprite de los animales, se usa el gato con efecto de movimiento para las cuatro direcciones.
+
+
+
 
 
 
