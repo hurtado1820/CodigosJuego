@@ -34,25 +34,42 @@ class Jugador (pygame.sprite.Sprite):
             self.accion = 1
         self.image = self.m[self.accion][self.con]
 
+class Bloque (pygame.sprite.Sprite):
+    def __init__ (self,pos,dim = [50,50]):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface(dim)
+        self.image.fill(VERDE)
+        self.rect = self.image.get_rect()
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
+        self.velx = 0
+
+    def update(self):
+        self.rect.x += self.velx
 
 
 if __name__ == '__main__':
     pygame.init()
     ventana = pygame.display.set_mode([ANCHO,ALTO])
     jugadores = pygame.sprite.Group()
+    bloques = pygame.sprite.Group()
 
-    im_animales = pygame.image.load("ken.png")
+    im_sprite = pygame.image.load("ken.png")
     #Recorte de sabana
     m = []
     for j in range(10):
         fila = []
         for c in range(7):
-            cuadro = im_animales.subsurface(70*c,80*j,70,80)
+            cuadro = im_sprite.subsurface(70*c,80*j,70,80)
             fila.append(cuadro)
         m.append(fila)
 
     j = Jugador([100,100],m)
     jugadores.add(j)
+
+    b = Bloque([200,300], [30,60])
+    bloques.add(b)
+
     fin = False
     reloj = pygame.time.Clock()
     cad = []
@@ -76,6 +93,7 @@ if __name__ == '__main__':
                     j.velx = 0
                     j.vely = 5
                 if event.key == pygame.K_c:
+                    #Accion de golpe
                     j.accion = 2
                     j.con = 0
                     cad += 'c'
@@ -94,10 +112,22 @@ if __name__ == '__main__':
         else:
             cad = ''
             '''
+
+        ls_col = pygame.sprite.spritecollide(j,bloques,False)
+        for b in ls_col:
+            if j.accion == 2:
+                b.velx = 5
+
+        for b in bloques:
+            if b.velx > 0 :
+                b.velx -= 1        
+
         jugadores.update()
+        bloques.update()
         ventana.fill(NEGRO)
         #mostrar en pantalla el sprite
         jugadores.draw(ventana)
+        bloques.draw(ventana)
         pygame.display.flip()
 
 
