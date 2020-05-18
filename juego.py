@@ -87,12 +87,13 @@ if __name__ == '__main__':
                 j.velx = 0
                 j.vely = 0
 
-        if len(cad) <= 3:
+        '''if len(cad) <= 3:
             print (cad)
             if cad == 'zxc':
                 print ("hado ken")
         else:
             cad = ''
+            '''
         jugadores.update()
         ventana.fill(NEGRO)
         #mostrar en pantalla el sprite
