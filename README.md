@@ -31,6 +31,8 @@ gestion_img: Se implementa el recorte de sabanas con una de terrenos como ejempl
 
 gestion_sp: Se implementa el sprite de los animales, se usa el gato con efecto de movimiento para las cuatro direcciones.
 
+generador:  Se implementa el concepto de generador. Se crea un bloque que funciona como generador y cada cierto tiempo salen de este ratones que se mueven en alguna de las cuatro direcciones. Se crean lineas que modifican el comportamiento de estos ratones, al hacer colision, cambian su direccion y velocidad. Por ultimo se implementa collide_circle, con esta, cada uno de los ratones puede detectar cuando el gato está cerca, de alli se puede modificar su comportamiento.
+
 
 
 
