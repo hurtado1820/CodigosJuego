@@ -33,6 +33,10 @@ gestion_sp: Se implementa el sprite de los animales, se usa el gato con efecto d
 
 generador:  Se implementa el concepto de generador. Se crea un bloque que funciona como generador y cada cierto tiempo salen de este ratones que se mueven en alguna de las cuatro direcciones. Se crean lineas que modifican el comportamiento de estos ratones, al hacer colision, cambian su direccion y velocidad. Por ultimo se implementa collide_circle, con esta, cada uno de los ratones puede detectar cuando el gato está cerca, de alli se puede modificar su comportamiento.
 
+plataforma: Se implementan dos plataformas y un jugador, se tiene en cuenta la colision con estas y se agrega en factor gravedad. El jugador puede saltar y vuelve a caer por efecto de gravedad y tambien pasar entre plataformas saltando
+
+mapeo: Carga de mapa por medio de la libreria configparser (la deben instalar) y se muestra graficamente con pygame. Se puede crear el mapa con caracteres y a cada uno de estos asignarle un sprite. Para luego mostrar por medio de una matriz en ventana.
+
 
 
 
